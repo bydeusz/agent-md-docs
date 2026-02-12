@@ -1,5 +1,5 @@
 {
-  "name": "agent-md-docs",
+  "name": "@bydeusz/agent-md-docs",
   "version": "0.1.0",
   "description": "A CLI tool that downloads framework documentation and generates a minified docs index for AGENTS.md or CLAUDE.md",
   "type": "module",
@@ -7,18 +7,35 @@
   "bin": {
     "agent-md-docs": "./dist/index.js"
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "agents",
     "claude",
+    "copilot",
+    "cursor",
     "docs",
     "documentation",
+    "cli",
+    "react",
+    "nextjs",
     "nestjs",
-    "cli"
+    "django",
+    "fastapi",
+    "django-rest-framework",
+    "express",
+    "agents-md",
+    "claude-md"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "license": "MIT",
   "dependencies": {
     "@inquirer/prompts": "^7.0.0"

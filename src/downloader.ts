@@ -132,14 +132,6 @@ export async function downloadDocs(
   outputDir: string,
 ): Promise<number> {
   const outputBase = path.join(outputDir, ".docs", config.key);
-
-  // Clean existing docs for this framework
-  try {
-    await fs.rm(outputBase, { recursive: true, force: true });
-  } catch {
-    // Directory may not exist, that's fine
-  }
-
   await fs.mkdir(outputBase, { recursive: true });
 
   console.log(`\nDownloading ${config.name} documentation...`);
@@ -153,18 +145,38 @@ export async function downloadDocs(
   const tree = await fetchFullTree(config.repo, config.branch);
 
   // 2. Filter to only docs files under contentPath with matching extensions
+  //    If convertExtensions is set, use those source extensions for filtering;
+  //    otherwise fall back to fileExtensions.
   const contentPrefix = config.contentPath + "/";
+  const sourceExtensions = config.convertExtensions
+    ? Object.keys(config.convertExtensions)
+    : config.fileExtensions;
+
   const docFiles = tree.filter((entry) => {
     if (entry.type !== "blob") return false;
     if (!entry.path.startsWith(contentPrefix)) return false;
-    return config.fileExtensions.some((ext) => entry.path.endsWith(ext));
+    return sourceExtensions.some((ext) => entry.path.endsWith(ext));
   });
 
   console.log(`  Found ${docFiles.length} documentation files.\n`);
 
-  // 3. Build the download list
+  // 3. Build the download list (converting extensions if needed)
   const filesToDownload = docFiles.map((entry) => {
-    const relativePath = entry.path.substring(contentPrefix.length);
+    let relativePath = entry.path.substring(contentPrefix.length);
+
+    // Convert file extension if convertExtensions is configured
+    if (config.convertExtensions) {
+      for (const [sourceExt, targetExt] of Object.entries(
+        config.convertExtensions,
+      )) {
+        if (relativePath.endsWith(sourceExt)) {
+          relativePath =
+            relativePath.slice(0, -sourceExt.length) + targetExt;
+          break;
+        }
+      }
+    }
+
     return {
       repoPath: entry.path,
       localPath: path.join(outputBase, relativePath),

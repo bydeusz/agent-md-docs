@@ -1,8 +1,5 @@
-import { select, checkbox, Separator } from "@inquirer/prompts";
-import {
-  frameworkRegistry,
-  getFrameworksByCategory,
-} from "./frameworks/registry.js";
+import { select, checkbox } from "@inquirer/prompts";
+import { getFrameworksByCategory } from "./frameworks/registry.js";
 import type { FrameworkConfig } from "./frameworks/registry.js";
 
 export type TargetFile = "AGENTS.md" | "CLAUDE.md";
@@ -12,45 +9,54 @@ export interface UserChoices {
   frameworks: FrameworkConfig[];
 }
 
+async function promptCategory(
+  label: string,
+  frameworks: FrameworkConfig[],
+): Promise<FrameworkConfig[]> {
+  const selectedKeys = await checkbox({
+    message: `${label} frameworks:`,
+    choices: frameworks.map((fw) => ({
+      name: fw.name,
+      value: fw.key,
+      checked: false,
+    })),
+  });
+
+  return frameworks.filter((fw) => selectedKeys.includes(fw.key));
+}
+
 export async function promptUser(): Promise<UserChoices> {
-  const targetFile = await select<TargetFile>({
-    message: "Which file do you want to create/update?",
+  // Step 1: Choose AI tool — this determines the target file
+  const tool = await select<"copilot" | "cursor" | "claude">({
+    message: "Which AI tool are you using?",
     choices: [
-      { name: "AGENTS.md", value: "AGENTS.md" },
-      { name: "CLAUDE.md", value: "CLAUDE.md" },
+      { name: "GitHub Copilot", value: "copilot" },
+      { name: "Cursor", value: "cursor" },
+      { name: "Claude Code", value: "claude" },
     ],
   });
 
+  const targetFile: TargetFile = tool === "claude" ? "CLAUDE.md" : "AGENTS.md";
+
+  const selected: FrameworkConfig[] = [];
+
+  // Step 2: Frontend
   const frontendFrameworks = getFrameworksByCategory("frontend");
-  const backendFrameworks = getFrameworksByCategory("backend");
-
-  const choices: Array<
-    { name: string; value: string; checked: boolean } | Separator
-  > = [];
-
   if (frontendFrameworks.length > 0) {
-    choices.push(new Separator("-- Frontend --"));
-    for (const fw of frontendFrameworks) {
-      choices.push({ name: fw.name, value: fw.key, checked: true });
-    }
+    const picked = await promptCategory("Frontend", frontendFrameworks);
+    selected.push(...picked);
   }
 
+  // Step 3: Backend
+  const backendFrameworks = getFrameworksByCategory("backend");
   if (backendFrameworks.length > 0) {
-    choices.push(new Separator("-- Backend --"));
-    for (const fw of backendFrameworks) {
-      choices.push({ name: fw.name, value: fw.key, checked: true });
-    }
+    const picked = await promptCategory("Backend", backendFrameworks);
+    selected.push(...picked);
   }
 
-  const selectedKeys = await checkbox({
-    message: "Which documentation would you like to download?",
-    choices,
-    required: true,
-  });
+  if (selected.length === 0) {
+    throw new Error("No frameworks selected. At least one is required.");
+  }
 
-  const frameworks = selectedKeys
-    .map((key) => frameworkRegistry.find((fw) => fw.key === key))
-    .filter((fw): fw is FrameworkConfig => fw !== undefined);
-
-  return { targetFile, frameworks };
+  return { targetFile, frameworks: selected };
 }

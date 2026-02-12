@@ -10,8 +10,35 @@ A CLI tool that downloads up-to-date framework documentation and generates a min
 
 ### Backend
 - **NestJS** - Full documentation from [nestjs/docs.nestjs.com](https://github.com/nestjs/docs.nestjs.com/tree/master/content)
+- **Django** - Full documentation from [django/django](https://github.com/django/django/tree/main/docs)
+- **FastAPI** - Full documentation from [fastapi/fastapi](https://github.com/fastapi/fastapi/tree/master/docs/en/docs)
+- **Django REST Framework** - Full documentation from [encode/django-rest-framework](https://github.com/encode/django-rest-framework/tree/main/docs)
+- **Express** - Full documentation from [expressjs/expressjs.com](https://github.com/expressjs/expressjs.com/tree/gh-pages/en)
 
 ## Usage
+
+The CLI will:
+1. Ask which AI tool you use (GitHub Copilot, Cursor, or Claude Code)
+2. Ask which framework documentation to download (frontend / backend)
+3. Clear the `.docs/` folder and download fresh docs
+4. Generate a minified index and insert it into `AGENTS.md` or `CLAUDE.md`
+5. Save a manifest (`.docs/manifest.json`) to track installed docs
+
+### Via npx
+
+```bash
+npx @bydeusz/agent-md-docs
+```
+
+### Upgrade existing docs
+
+To re-download and update all previously installed docs without going through the prompts:
+
+```bash
+npx @bydeusz/agent-md-docs --upgrade
+```
+
+This reads the manifest and re-downloads everything in one go.
 
 ### Local development
 
@@ -19,18 +46,6 @@ A CLI tool that downloads up-to-date framework documentation and generates a min
 npm install
 npm run build
 node dist/index.js
-```
-
-The CLI will:
-1. Ask which file to create/update (`AGENTS.md` or `CLAUDE.md`)
-2. Ask which framework documentation to download
-3. Download the docs into `.docs/{framework}/`
-4. Generate a minified index and insert it into the chosen file
-
-### Via npx (coming soon)
-
-```bash
-npx agent-md-docs
 ```
 
 ## What it does
@@ -51,5 +66,6 @@ To add a new framework, create a config file in `src/frameworks/` and register i
 - GitHub repository and branch
 - Path to the documentation content
 - File extensions to download (`.md`, `.mdx`, etc.)
+- Optional extension conversion (e.g. `.txt` → `.md` for Django)
 - Comment markers for the index block
 - Warning message for the AI agent

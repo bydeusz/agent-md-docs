@@ -1,6 +1,45 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import type { FrameworkConfig } from "./frameworks/registry.js";
+import { frameworkRegistry } from "./frameworks/registry.js";
+
+/**
+ * Remove all known framework index blocks from the target file.
+ * Any content that is not between framework comment markers is preserved.
+ */
+export async function cleanIndexBlocks(
+  targetFilePath: string,
+): Promise<void> {
+  let content: string;
+
+  try {
+    content = await fs.readFile(targetFilePath, "utf-8");
+  } catch {
+    // File doesn't exist, nothing to clean
+    return;
+  }
+
+  let cleaned = content;
+
+  for (const config of frameworkRegistry) {
+    const startIdx = cleaned.indexOf(config.startComment);
+    const endIdx = cleaned.indexOf(config.endComment);
+
+    if (startIdx !== -1 && endIdx !== -1) {
+      const before = cleaned.substring(0, startIdx);
+      const after = cleaned.substring(endIdx + config.endComment.length);
+      cleaned = before + after;
+    }
+  }
+
+  // Collapse multiple consecutive blank lines into a single one
+  cleaned = cleaned.replace(/\n{3,}/g, "\n\n");
+  // Remove trailing whitespace but keep a final newline
+  cleaned = cleaned.trimEnd() + "\n";
+
+  await fs.writeFile(targetFilePath, cleaned, "utf-8");
+  console.log(`  Cleaned existing index blocks from ${path.basename(targetFilePath)}`);
+}
 
 /**
  * Writes or updates the index block in the target file (AGENTS.md or CLAUDE.md).

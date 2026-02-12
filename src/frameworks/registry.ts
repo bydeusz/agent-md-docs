@@ -13,8 +13,12 @@ export interface FrameworkConfig {
   branch: string;
   /** Path within the repo where docs live */
   contentPath: string;
-  /** File extensions to download (e.g. [".md"] or [".mdx"]) */
+  /** File extensions on the local filesystem (e.g. [".md"] or [".mdx"]) */
   fileExtensions: string[];
+  /** Optional: convert source extensions to target extensions during download.
+   *  Keys are the source extensions in the repo, values are the target extensions saved locally.
+   *  Example: { ".txt": ".md" } downloads .txt files but saves them as .md */
+  convertExtensions?: Record<string, string>;
   /** HTML comment start marker for the index block */
   startComment: string;
   /** HTML comment end marker for the index block */
@@ -26,11 +30,19 @@ export interface FrameworkConfig {
 import { reactConfig } from "./react.js";
 import { nextjsConfig } from "./nextjs.js";
 import { nestjsConfig } from "./nestjs.js";
+import { djangoConfig } from "./django.js";
+import { fastapiConfig } from "./fastapi.js";
+import { drfConfig } from "./drf.js";
+import { expressConfig } from "./express.js";
 
 export const frameworkRegistry: FrameworkConfig[] = [
   reactConfig,
   nextjsConfig,
   nestjsConfig,
+  djangoConfig,
+  fastapiConfig,
+  drfConfig,
+  expressConfig,
 ];
 
 export function getFrameworkByKey(key: string): FrameworkConfig | undefined {
