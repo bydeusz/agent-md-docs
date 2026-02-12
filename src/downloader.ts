@@ -2,99 +2,129 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import type { FrameworkConfig } from "./frameworks/registry.js";
 
-interface GitHubContentEntry {
-  name: string;
+interface GitHubTreeEntry {
   path: string;
-  type: "file" | "dir";
-  download_url: string | null;
+  mode: string;
+  type: "blob" | "tree";
+  sha: string;
+  size?: number;
+  url: string;
 }
 
-const RATE_LIMIT_DELAY_MS = 100;
+interface GitHubTreeResponse {
+  sha: string;
+  url: string;
+  tree: GitHubTreeEntry[];
+  truncated: boolean;
+}
 
-function getHeaders(): Record<string, string> {
-  const headers: Record<string, string> = {
-    Accept: "application/vnd.github.v3+json",
-    "User-Agent": "agent-md-docs-cli",
-  };
-  const token = process.env.GITHUB_TOKEN;
-  if (token) {
-    headers["Authorization"] = `Bearer ${token}`;
+const CONCURRENT_DOWNLOADS = 10;
+
+function formatRateLimitInfo(response: Response): string {
+  const remaining = response.headers.get("x-ratelimit-remaining");
+  const limit = response.headers.get("x-ratelimit-limit");
+  const resetTimestamp = response.headers.get("x-ratelimit-reset");
+
+  if (!remaining || !limit) return "";
+
+  let resetInfo = "";
+  if (resetTimestamp) {
+    const resetDate = new Date(parseInt(resetTimestamp) * 1000);
+    const minutes = Math.ceil(
+      (resetDate.getTime() - Date.now()) / 1000 / 60,
+    );
+    resetInfo = ` (resets in ${minutes} min)`;
   }
-  return headers;
+
+  return `  Rate limit: ${remaining}/${limit} remaining${resetInfo}`;
 }
 
-async function sleep(ms: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
-async function fetchDirectoryContents(
+/**
+ * Fetch the entire file tree for a repo/branch in a single API call.
+ * This uses the Git Trees API with ?recursive=1, which returns all files
+ * in one request instead of one request per directory.
+ */
+async function fetchFullTree(
   repo: string,
-  dirPath: string,
   branch: string,
-): Promise<GitHubContentEntry[]> {
-  const url = `https://api.github.com/repos/${repo}/contents/${dirPath}?ref=${branch}`;
-  const response = await fetch(url, { headers: getHeaders() });
+): Promise<GitHubTreeEntry[]> {
+  const url = `https://api.github.com/repos/${repo}/git/trees/${branch}?recursive=1`;
+  const response = await fetch(url);
 
   if (!response.ok) {
+    if (response.status === 403 || response.status === 429) {
+      const rateLimitInfo = formatRateLimitInfo(response);
+      throw new Error(
+        `GitHub API rate limit exceeded for ${repo}.${rateLimitInfo ? "\n" + rateLimitInfo : ""}`,
+      );
+    }
     throw new Error(
       `GitHub API error: ${response.status} ${response.statusText} for ${url}`,
     );
   }
 
-  return (await response.json()) as GitHubContentEntry[];
+  const rateLimitInfo = formatRateLimitInfo(response);
+  if (rateLimitInfo) {
+    console.log(rateLimitInfo);
+  }
+
+  const data = (await response.json()) as GitHubTreeResponse;
+
+  if (data.truncated) {
+    console.warn(
+      "  Warning: The repository tree was truncated. Some files may be missing.",
+    );
+  }
+
+  return data.tree;
 }
 
-async function downloadFile(downloadUrl: string): Promise<string> {
-  const response = await fetch(downloadUrl, { headers: getHeaders() });
+/**
+ * Download a file via raw.githubusercontent.com.
+ */
+async function downloadRawFile(
+  repo: string,
+  branch: string,
+  filePath: string,
+): Promise<string> {
+  const url = `https://raw.githubusercontent.com/${repo}/${branch}/${filePath}`;
+  const response = await fetch(url);
 
   if (!response.ok) {
     throw new Error(
-      `Failed to download file: ${response.status} ${response.statusText} for ${downloadUrl}`,
+      `Failed to download file: ${response.status} ${response.statusText} for ${url}`,
     );
   }
 
   return await response.text();
 }
 
-async function downloadRecursive(
-  config: FrameworkConfig,
-  dirPath: string,
-  outputBase: string,
-  relativePath: string,
+/**
+ * Download files in batches to avoid overwhelming the network.
+ */
+async function downloadInBatches(
+  files: { repoPath: string; localPath: string; displayPath: string }[],
+  repo: string,
+  branch: string,
+  batchSize: number,
 ): Promise<number> {
-  const entries = await fetchDirectoryContents(
-    config.repo,
-    dirPath,
-    config.branch,
-  );
-  let fileCount = 0;
+  let downloaded = 0;
 
-  for (const entry of entries) {
-    await sleep(RATE_LIMIT_DELAY_MS);
+  for (let i = 0; i < files.length; i += batchSize) {
+    const batch = files.slice(i, i + batchSize);
 
-    if (entry.type === "file" && entry.name.endsWith(".md")) {
-      const filePath = path.join(outputBase, relativePath, entry.name);
-      await fs.mkdir(path.dirname(filePath), { recursive: true });
-
-      const content = await downloadFile(entry.download_url!);
-      await fs.writeFile(filePath, content, "utf-8");
-
-      fileCount++;
-      console.log(`  Downloaded: ${path.join(relativePath, entry.name)}`);
-    } else if (entry.type === "dir") {
-      const subRelPath = path.join(relativePath, entry.name);
-      const subDirPath = `${dirPath}/${entry.name}`;
-
-      fileCount += await downloadRecursive(
-        config,
-        subDirPath,
-        outputBase,
-        subRelPath,
-      );
-    }
+    await Promise.all(
+      batch.map(async (file) => {
+        const content = await downloadRawFile(repo, branch, file.repoPath);
+        await fs.mkdir(path.dirname(file.localPath), { recursive: true });
+        await fs.writeFile(file.localPath, content, "utf-8");
+        downloaded++;
+        console.log(`  Downloaded: ${file.displayPath}`);
+      }),
+    );
   }
 
-  return fileCount;
+  return downloaded;
 }
 
 export async function downloadDocs(
@@ -113,14 +143,41 @@ export async function downloadDocs(
   await fs.mkdir(outputBase, { recursive: true });
 
   console.log(`\nDownloading ${config.name} documentation...`);
-  console.log(`  Source: https://github.com/${config.repo}/tree/${config.branch}/${config.contentPath}`);
+  console.log(
+    `  Source: https://github.com/${config.repo}/tree/${config.branch}/${config.contentPath}`,
+  );
   console.log(`  Destination: ${outputBase}\n`);
 
-  const fileCount = await downloadRecursive(
-    config,
-    config.contentPath,
-    outputBase,
-    "",
+  // 1. Fetch the full tree in a single API call
+  console.log("  Fetching file tree...");
+  const tree = await fetchFullTree(config.repo, config.branch);
+
+  // 2. Filter to only docs files under contentPath with matching extensions
+  const contentPrefix = config.contentPath + "/";
+  const docFiles = tree.filter((entry) => {
+    if (entry.type !== "blob") return false;
+    if (!entry.path.startsWith(contentPrefix)) return false;
+    return config.fileExtensions.some((ext) => entry.path.endsWith(ext));
+  });
+
+  console.log(`  Found ${docFiles.length} documentation files.\n`);
+
+  // 3. Build the download list
+  const filesToDownload = docFiles.map((entry) => {
+    const relativePath = entry.path.substring(contentPrefix.length);
+    return {
+      repoPath: entry.path,
+      localPath: path.join(outputBase, relativePath),
+      displayPath: relativePath,
+    };
+  });
+
+  // 4. Download all files in parallel batches via raw.githubusercontent.com
+  const fileCount = await downloadInBatches(
+    filesToDownload,
+    config.repo,
+    config.branch,
+    CONCURRENT_DOWNLOADS,
   );
 
   console.log(`\n  Done! Downloaded ${fileCount} files for ${config.name}.\n`);

@@ -4,6 +4,11 @@ A CLI tool that downloads up-to-date framework documentation and generates a min
 
 ## Supported Frameworks
 
+### Frontend
+- **React** - Full documentation from [reactjs/react.dev](https://github.com/reactjs/react.dev/tree/main/src/content)
+- **Next.js** - Full documentation from [vercel/next.js](https://github.com/vercel/next.js/tree/canary/docs)
+
+### Backend
 - **NestJS** - Full documentation from [nestjs/docs.nestjs.com](https://github.com/nestjs/docs.nestjs.com/tree/master/content)
 
 ## Usage
@@ -42,7 +47,9 @@ This index is inserted into your `AGENTS.md` or `CLAUDE.md` file. AI agents can 
 
 To add a new framework, create a config file in `src/frameworks/` and register it in `src/frameworks/registry.ts`. Each framework config specifies:
 
+- Category (`frontend` or `backend`)
 - GitHub repository and branch
 - Path to the documentation content
+- File extensions to download (`.md`, `.mdx`, etc.)
 - Comment markers for the index block
 - Warning message for the AI agent

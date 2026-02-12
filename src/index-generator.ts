@@ -12,6 +12,7 @@ interface DirEntry {
 async function scanDirectory(
   dirPath: string,
   relativePath: string,
+  fileExtensions: string[],
 ): Promise<DirEntry[]> {
   const entries: DirEntry[] = [];
   const files: string[] = [];
@@ -20,7 +21,10 @@ async function scanDirectory(
   const items = await fs.readdir(dirPath, { withFileTypes: true });
 
   for (const item of items) {
-    if (item.isFile() && item.name.endsWith(".md")) {
+    const hasMatchingExtension = fileExtensions.some((ext) =>
+      item.name.endsWith(ext),
+    );
+    if (item.isFile() && hasMatchingExtension) {
       files.push(item.name);
     } else if (item.isDirectory()) {
       subdirs.push(item.name);
@@ -39,7 +43,7 @@ async function scanDirectory(
   for (const subdir of subdirs) {
     const subPath = path.join(dirPath, subdir);
     const subRelative = relativePath ? `${relativePath}/${subdir}` : subdir;
-    const subEntries = await scanDirectory(subPath, subRelative);
+    const subEntries = await scanDirectory(subPath, subRelative, fileExtensions);
     entries.push(...subEntries);
   }
 
@@ -55,7 +59,7 @@ export async function generateIndex(
   // Use forward slashes for the root path (cross-platform in .md files)
   const docsRootRelative = `./.docs/${config.key}`;
 
-  const dirEntries = await scanDirectory(docsRoot, "");
+  const dirEntries = await scanDirectory(docsRoot, "", config.fileExtensions);
 
   // Build the minified index segments
   const segments: string[] = [];
