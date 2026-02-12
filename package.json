@@ -1,0 +1,31 @@
+{
+  "name": "agent-md-docs",
+  "version": "0.1.0",
+  "description": "A CLI tool that downloads framework documentation and generates a minified docs index for AGENTS.md or CLAUDE.md",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "agent-md-docs": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "keywords": [
+    "agents",
+    "claude",
+    "docs",
+    "documentation",
+    "nestjs",
+    "cli"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@inquirer/prompts": "^7.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.0.0"
+  }
+}
