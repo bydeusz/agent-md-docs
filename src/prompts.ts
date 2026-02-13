@@ -61,6 +61,13 @@ export async function promptUser(): Promise<UserChoices> {
     selected.push(...picked);
   }
 
+  // Step 5: ORMs
+  const ormFrameworks = getFrameworksByCategory("orm");
+  if (ormFrameworks.length > 0) {
+    const picked = await promptCategory("ORM", ormFrameworks);
+    selected.push(...picked);
+  }
+
   if (selected.length === 0) {
     throw new Error("No frameworks selected. At least one is required.");
   }
