@@ -1,4 +1,4 @@
-export type FrameworkCategory = "frontend" | "backend";
+export type FrameworkCategory = "frontend" | "backend" | "bundler";
 
 export interface FrameworkConfig {
   /** Display name shown in prompts */
@@ -36,6 +36,7 @@ import { drfConfig } from "./drf.js";
 import { expressConfig } from "./express.js";
 import { vueConfig } from "./vue.js";
 import { nuxtConfig } from "./nuxt.js";
+import { viteConfig } from "./vite.js";
 
 export const frameworkRegistry: FrameworkConfig[] = [
   reactConfig,
@@ -47,6 +48,7 @@ export const frameworkRegistry: FrameworkConfig[] = [
   fastapiConfig,
   drfConfig,
   expressConfig,
+  viteConfig,
 ];
 
 export function getFrameworkByKey(key: string): FrameworkConfig | undefined {

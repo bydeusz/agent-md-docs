@@ -54,6 +54,13 @@ export async function promptUser(): Promise<UserChoices> {
     selected.push(...picked);
   }
 
+  // Step 4: Bundlers
+  const bundlerFrameworks = getFrameworksByCategory("bundler");
+  if (bundlerFrameworks.length > 0) {
+    const picked = await promptCategory("Bundler", bundlerFrameworks);
+    selected.push(...picked);
+  }
+
   if (selected.length === 0) {
     throw new Error("No frameworks selected. At least one is required.");
   }
