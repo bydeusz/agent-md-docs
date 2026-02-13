@@ -10,6 +10,4 @@ export const vueConfig: FrameworkConfig = {
   fileExtensions: [".md"],
   startComment: "<!-- VUE-AGENTS-MD-START -->",
   endComment: "<!-- VUE-AGENTS-MD-END -->",
-  warningMessage:
-    "STOP. What you remember about Vue is WRONG for this project. Always search docs and read before any task.",
 };

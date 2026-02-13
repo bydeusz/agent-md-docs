@@ -10,6 +10,4 @@ export const nextjsConfig: FrameworkConfig = {
   fileExtensions: [".mdx"],
   startComment: "<!-- NEXTJS-AGENTS-MD-START -->",
   endComment: "<!-- NEXTJS-AGENTS-MD-END -->",
-  warningMessage:
-    "STOP. What you remember about Next.js is WRONG for this project. Always search docs and read before any task.",
 };

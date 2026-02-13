@@ -10,6 +10,4 @@ export const viteConfig: FrameworkConfig = {
   fileExtensions: [".md"],
   startComment: "<!-- VITE-AGENTS-MD-START -->",
   endComment: "<!-- VITE-AGENTS-MD-END -->",
-  warningMessage:
-    "STOP. What you remember about Vite is WRONG for this project. Always search docs and read before any task.",
 };

@@ -10,6 +10,4 @@ export const typeormConfig: FrameworkConfig = {
   fileExtensions: [".md"],
   startComment: "<!-- TYPEORM-AGENTS-MD-START -->",
   endComment: "<!-- TYPEORM-AGENTS-MD-END -->",
-  warningMessage:
-    "STOP. What you remember about TypeORM is WRONG for this project. Always search docs and read before any task.",
 };

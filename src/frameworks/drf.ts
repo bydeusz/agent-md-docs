@@ -10,6 +10,4 @@ export const drfConfig: FrameworkConfig = {
   fileExtensions: [".md"],
   startComment: "<!-- DRF-AGENTS-MD-START -->",
   endComment: "<!-- DRF-AGENTS-MD-END -->",
-  warningMessage:
-    "STOP. What you remember about Django REST Framework is WRONG for this project. Always search docs and read before any task.",
 };

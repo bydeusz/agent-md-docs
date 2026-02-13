@@ -70,12 +70,14 @@ export async function generateIndex(
   // Root path
   segments.push(`root: ${docsRootRelative}`);
 
-  // Warning message
-  segments.push(config.warningMessage);
-
   // Retrieval-led reasoning instruction
   segments.push(
     `IMPORTANT: Prefer retrieval-led reasoning over pre-training-led reasoning for any ${config.name} tasks.`,
+  );
+
+  // Citation instruction
+  segments.push(
+    `When answering ${config.name} questions, ALWAYS read the relevant doc file first and cite the file path (e.g. ${docsRootRelative}/...) in your response.`,
   );
 
   // Reinstall hint

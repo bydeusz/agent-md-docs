@@ -10,6 +10,4 @@ export const drizzleConfig: FrameworkConfig = {
   fileExtensions: [".mdx"],
   startComment: "<!-- DRIZZLE-AGENTS-MD-START -->",
   endComment: "<!-- DRIZZLE-AGENTS-MD-END -->",
-  warningMessage:
-    "STOP. What you remember about Drizzle ORM is WRONG for this project. Always search docs and read before any task.",
 };

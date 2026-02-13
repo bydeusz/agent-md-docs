@@ -10,6 +10,4 @@ export const prismaConfig: FrameworkConfig = {
   fileExtensions: [".mdx"],
   startComment: "<!-- PRISMA-AGENTS-MD-START -->",
   endComment: "<!-- PRISMA-AGENTS-MD-END -->",
-  warningMessage:
-    "STOP. What you remember about Prisma is WRONG for this project. Always search docs and read before any task.",
 };

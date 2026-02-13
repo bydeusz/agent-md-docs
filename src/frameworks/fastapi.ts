@@ -10,6 +10,4 @@ export const fastapiConfig: FrameworkConfig = {
   fileExtensions: [".md"],
   startComment: "<!-- FASTAPI-AGENTS-MD-START -->",
   endComment: "<!-- FASTAPI-AGENTS-MD-END -->",
-  warningMessage:
-    "STOP. What you remember about FastAPI is WRONG for this project. Always search docs and read before any task.",
 };

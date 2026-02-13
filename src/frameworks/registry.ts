@@ -23,8 +23,6 @@ export interface FrameworkConfig {
   startComment: string;
   /** HTML comment end marker for the index block */
   endComment: string;
-  /** Warning message inserted in the index */
-  warningMessage: string;
 }
 
 import { reactConfig } from "./react.js";

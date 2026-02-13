@@ -13,6 +13,7 @@
   "scripts": {
     "build": "tsc",
     "start": "npm run build && node dist/index.js",
+    "upgrade": "npm run build && node dist/index.js --upgrade",
     "prepublishOnly": "npm run build"
   },
   "keywords": [

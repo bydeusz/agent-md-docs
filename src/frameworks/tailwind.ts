@@ -10,6 +10,4 @@ export const tailwindConfig: FrameworkConfig = {
   fileExtensions: [".mdx"],
   startComment: "<!-- TAILWIND-AGENTS-MD-START -->",
   endComment: "<!-- TAILWIND-AGENTS-MD-END -->",
-  warningMessage:
-    "STOP. What you remember about Tailwind CSS is WRONG for this project. Always search docs and read before any task.",
 };

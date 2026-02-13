@@ -10,6 +10,4 @@ export const nuxtConfig: FrameworkConfig = {
   fileExtensions: [".md"],
   startComment: "<!-- NUXT-AGENTS-MD-START -->",
   endComment: "<!-- NUXT-AGENTS-MD-END -->",
-  warningMessage:
-    "STOP. What you remember about Nuxt is WRONG for this project. Always search docs and read before any task.",
 };

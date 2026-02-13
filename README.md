@@ -89,4 +89,3 @@ To add a new framework, create a config file in `src/frameworks/` and register i
 - File extensions to download (`.md`, `.mdx`, etc.)
 - Optional extension conversion (e.g. `.txt` → `.md` for Django)
 - Comment markers for the index block
-- Warning message for the AI agent

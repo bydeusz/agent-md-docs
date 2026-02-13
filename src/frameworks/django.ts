@@ -11,6 +11,4 @@ export const djangoConfig: FrameworkConfig = {
   convertExtensions: { ".txt": ".md" },
   startComment: "<!-- DJANGO-AGENTS-MD-START -->",
   endComment: "<!-- DJANGO-AGENTS-MD-END -->",
-  warningMessage:
-    "STOP. What you remember about Django is WRONG for this project. Always search docs and read before any task.",
 };
