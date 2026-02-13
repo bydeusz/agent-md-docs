@@ -34,10 +34,14 @@ import { djangoConfig } from "./django.js";
 import { fastapiConfig } from "./fastapi.js";
 import { drfConfig } from "./drf.js";
 import { expressConfig } from "./express.js";
+import { vueConfig } from "./vue.js";
+import { nuxtConfig } from "./nuxt.js";
 
 export const frameworkRegistry: FrameworkConfig[] = [
   reactConfig,
   nextjsConfig,
+  vueConfig,
+  nuxtConfig,
   nestjsConfig,
   djangoConfig,
   fastapiConfig,

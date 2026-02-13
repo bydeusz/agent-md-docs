@@ -7,6 +7,8 @@ A CLI tool that downloads up-to-date framework documentation and generates a min
 ### Frontend
 - **React** - Full documentation from [reactjs/react.dev](https://github.com/reactjs/react.dev/tree/main/src/content)
 - **Next.js** - Full documentation from [vercel/next.js](https://github.com/vercel/next.js/tree/canary/docs)
+- **Vue** - Full documentation from [vuejs/docs](https://github.com/vuejs/docs/tree/main/src)
+- **Nuxt** - Full documentation from [nuxt/nuxt](https://github.com/nuxt/nuxt/tree/main/docs)
 
 ### Backend
 - **NestJS** - Full documentation from [nestjs/docs.nestjs.com](https://github.com/nestjs/docs.nestjs.com/tree/master/content)
