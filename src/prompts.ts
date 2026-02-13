@@ -68,6 +68,13 @@ export async function promptUser(): Promise<UserChoices> {
     selected.push(...picked);
   }
 
+  // Step 6: Styling
+  const stylingFrameworks = getFrameworksByCategory("styling");
+  if (stylingFrameworks.length > 0) {
+    const picked = await promptCategory("Styling", stylingFrameworks);
+    selected.push(...picked);
+  }
+
   if (selected.length === 0) {
     throw new Error("No frameworks selected. At least one is required.");
   }

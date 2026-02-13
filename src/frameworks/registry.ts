@@ -1,4 +1,4 @@
-export type FrameworkCategory = "frontend" | "backend" | "bundler" | "orm";
+export type FrameworkCategory = "frontend" | "backend" | "bundler" | "orm" | "styling";
 
 export interface FrameworkConfig {
   /** Display name shown in prompts */
@@ -38,6 +38,7 @@ import { vueConfig } from "./vue.js";
 import { nuxtConfig } from "./nuxt.js";
 import { viteConfig } from "./vite.js";
 import { prismaConfig } from "./prisma.js";
+import { tailwindConfig } from "./tailwind.js";
 
 export const frameworkRegistry: FrameworkConfig[] = [
   reactConfig,
@@ -51,6 +52,7 @@ export const frameworkRegistry: FrameworkConfig[] = [
   expressConfig,
   viteConfig,
   prismaConfig,
+  tailwindConfig,
 ];
 
 export function getFrameworkByKey(key: string): FrameworkConfig | undefined {

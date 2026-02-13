@@ -23,11 +23,14 @@ A CLI tool that downloads up-to-date framework documentation and generates a min
 ### ORMs
 - **Prisma** - Full documentation from [prisma/docs](https://github.com/prisma/docs/tree/main/apps/docs/content)
 
+### Styling
+- **Tailwind CSS** - Full documentation from [tailwindlabs/tailwindcss.com](https://github.com/tailwindlabs/tailwindcss.com/tree/main/src/docs)
+
 ## Usage
 
 The CLI will:
 1. Ask which AI tool you use (GitHub Copilot, Cursor, or Claude Code)
-2. Ask which framework documentation to download (frontend / backend / bundler / ORM)
+2. Ask which framework documentation to download (frontend / backend / bundler / ORM / styling)
 3. Clear the `.docs/` folder and download fresh docs
 4. Generate a minified index and insert it into `AGENTS.md` or `CLAUDE.md`
 5. Save a manifest (`.docs/manifest.json`) to track installed docs
@@ -70,7 +73,7 @@ This index is inserted into your `AGENTS.md` or `CLAUDE.md` file. AI agents can 
 
 To add a new framework, create a config file in `src/frameworks/` and register it in `src/frameworks/registry.ts`. Each framework config specifies:
 
-- Category (`frontend`, `backend`, `bundler`, or `orm`)
+- Category (`frontend`, `backend`, `bundler`, `orm`, or `styling`)
 - GitHub repository and branch
 - Path to the documentation content
 - File extensions to download (`.md`, `.mdx`, etc.)
