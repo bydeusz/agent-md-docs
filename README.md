@@ -30,6 +30,8 @@ This tool extends that approach beyond Next.js to **12 frameworks** across multi
 
 ### ORMs
 - **Prisma** - Full documentation from [prisma/docs](https://github.com/prisma/docs/tree/main/apps/docs/content)
+- **TypeORM** - Full documentation from [typeorm/typeorm](https://github.com/typeorm/typeorm/tree/master/docs/docs)
+- **Drizzle ORM** - Full documentation from [drizzle-team/drizzle-orm-docs](https://github.com/drizzle-team/drizzle-orm-docs/tree/main/src/content/docs)
 
 ### Styling
 - **Tailwind CSS** - Full documentation from [tailwindlabs/tailwindcss.com](https://github.com/tailwindlabs/tailwindcss.com/tree/main/src/docs)
