@@ -73,8 +73,13 @@ export async function generateIndex(
   // Warning message
   segments.push(config.warningMessage);
 
+  // Retrieval-led reasoning instruction
+  segments.push(
+    `IMPORTANT: Prefer retrieval-led reasoning over pre-training-led reasoning for any ${config.name} tasks.`,
+  );
+
   // Reinstall hint
-  segments.push(`If docs missing, run: npx agent-md-docs`);
+  segments.push(`If docs missing, run: npx @bydeusz/agent-md-docs`);
 
   // Directory entries
   for (const entry of dirEntries) {

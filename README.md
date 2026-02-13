@@ -2,6 +2,14 @@
 
 A CLI tool that downloads up-to-date framework documentation and generates a minified docs index for your `AGENTS.md` or `CLAUDE.md` file -- so AI coding agents always know where to find the right docs.
 
+## Inspiration
+
+This project was inspired by Vercel's research showing that a compressed docs index in `AGENTS.md` achieved a **100% pass rate** on their agent evals, outperforming skill-based approaches. The key insight: passive context (always available in `AGENTS.md`) beats active retrieval (skills the agent must decide to invoke).
+
+Read the full article: [AGENTS.md outperforms skills in our agent evals](https://vercel.com/blog/agents-md-outperforms-skills-in-our-agent-evals)
+
+This tool extends that approach beyond Next.js to **12 frameworks** across multiple categories, so any project can benefit from retrieval-led reasoning.
+
 ## Supported Frameworks
 
 ### Frontend
