@@ -54,21 +54,28 @@ export async function promptUser(): Promise<UserChoices> {
     selected.push(...picked);
   }
 
-  // Step 4: Bundlers
+  // Step 4: Runtimes
+  const runtimeFrameworks = getFrameworksByCategory("runtime");
+  if (runtimeFrameworks.length > 0) {
+    const picked = await promptCategory("Runtime", runtimeFrameworks);
+    selected.push(...picked);
+  }
+
+  // Step 5: Bundlers
   const bundlerFrameworks = getFrameworksByCategory("bundler");
   if (bundlerFrameworks.length > 0) {
     const picked = await promptCategory("Bundler", bundlerFrameworks);
     selected.push(...picked);
   }
 
-  // Step 5: ORMs
+  // Step 6: ORMs
   const ormFrameworks = getFrameworksByCategory("orm");
   if (ormFrameworks.length > 0) {
     const picked = await promptCategory("ORM", ormFrameworks);
     selected.push(...picked);
   }
 
-  // Step 6: Styling
+  // Step 7: Styling
   const stylingFrameworks = getFrameworksByCategory("styling");
   if (stylingFrameworks.length > 0) {
     const picked = await promptCategory("Styling", stylingFrameworks);

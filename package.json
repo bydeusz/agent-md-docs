@@ -1,6 +1,6 @@
 {
   "name": "@bydeusz/agent-md-docs",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "A CLI tool that downloads framework documentation and generates a minified docs index for AGENTS.md or CLAUDE.md",
   "type": "module",
   "main": "dist/index.js",
@@ -13,8 +13,7 @@
   "scripts": {
     "build": "tsc",
     "start": "npm run build && node dist/index.js",
-    "upgrade": "npm run build && node dist/index.js --upgrade",
-    "prepublishOnly": "npm run build"
+    "upgrade": "npm run build && node dist/index.js --upgrade"
   },
   "keywords": [
     "agents",
@@ -31,6 +30,8 @@
     "fastapi",
     "django-rest-framework",
     "express",
+    "bun",
+    "nodejs",
     "agents-md",
     "claude-md"
   ],

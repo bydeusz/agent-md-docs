@@ -1,4 +1,4 @@
-export type FrameworkCategory = "frontend" | "backend" | "bundler" | "orm" | "styling";
+export type FrameworkCategory = "frontend" | "backend" | "runtime" | "bundler" | "orm" | "styling";
 
 export interface FrameworkConfig {
   /** Display name shown in prompts */
@@ -39,6 +39,8 @@ import { prismaConfig } from "./prisma.js";
 import { tailwindConfig } from "./tailwind.js";
 import { typeormConfig } from "./typeorm.js";
 import { drizzleConfig } from "./drizzle.js";
+import { bunConfig } from "./bun.js";
+import { nodejsConfig } from "./nodejs.js";
 
 export const frameworkRegistry: FrameworkConfig[] = [
   reactConfig,
@@ -50,6 +52,8 @@ export const frameworkRegistry: FrameworkConfig[] = [
   fastapiConfig,
   drfConfig,
   expressConfig,
+  bunConfig,
+  nodejsConfig,
   viteConfig,
   prismaConfig,
   typeormConfig,
