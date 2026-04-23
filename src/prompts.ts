@@ -82,7 +82,14 @@ export async function promptUser(): Promise<UserChoices> {
     selected.push(...picked);
   }
 
-  // Step 8: Styling
+  // Step 8: Mobile
+  const mobileFrameworks = getFrameworksByCategory("mobile");
+  if (mobileFrameworks.length > 0) {
+    const picked = await promptCategory("Mobile", mobileFrameworks);
+    selected.push(...picked);
+  }
+
+  // Step 9: Styling
   const stylingFrameworks = getFrameworksByCategory("styling");
   if (stylingFrameworks.length > 0) {
     const picked = await promptCategory("Styling", stylingFrameworks);

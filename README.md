@@ -8,7 +8,7 @@ This project was inspired by Vercel's research showing that a compressed docs in
 
 Read the full article: [AGENTS.md outperforms skills in our agent evals](https://vercel.com/blog/agents-md-outperforms-skills-in-our-agent-evals)
 
-This tool extends that approach beyond Next.js to **18 frameworks** across multiple categories, so any project can benefit from retrieval-led reasoning.
+This tool extends that approach beyond Next.js to **19 frameworks** across multiple categories, so any project can benefit from retrieval-led reasoning.
 
 ## Supported Frameworks
 
@@ -41,6 +41,9 @@ This tool extends that approach beyond Next.js to **18 frameworks** across multi
 ### TanStack
 - **TanStack Query** - Full documentation from [TanStack/query](https://github.com/TanStack/query/tree/main/docs)
 
+### Mobile
+- **React Native** - Full documentation from [facebook/react-native-website](https://github.com/facebook/react-native-website/tree/main/docs)
+
 ### Styling
 - **Tailwind CSS** - Full documentation from [tailwindlabs/tailwindcss.com](https://github.com/tailwindlabs/tailwindcss.com/tree/main/src/docs)
 
@@ -48,7 +51,7 @@ This tool extends that approach beyond Next.js to **18 frameworks** across multi
 
 The CLI will:
 1. Ask which AI tool you use (GitHub Copilot, Cursor, or Claude Code)
-2. Ask which framework documentation to download (frontend / backend / runtime / bundler / ORM / TanStack / styling)
+2. Ask which framework documentation to download (frontend / backend / runtime / bundler / ORM / TanStack / mobile / styling)
 3. Clear the `.docs/` folder and download fresh docs
 4. Generate a minified index and insert it into `AGENTS.md` or `CLAUDE.md`
 5. Save a manifest (`.docs/manifest.json`) to track installed docs
@@ -91,7 +94,7 @@ This index is inserted into your `AGENTS.md` or `CLAUDE.md` file. AI agents can 
 
 To add a new framework, create a config file in `src/frameworks/` and register it in `src/frameworks/registry.ts`. Each framework config specifies:
 
-- Category (`frontend`, `backend`, `runtime`, `bundler`, `orm`, or `styling`)
+- Category (`frontend`, `backend`, `runtime`, `bundler`, `orm`, `tanstack`, `mobile`, or `styling`)
 - GitHub repository and branch
 - Path to the documentation content
 - File extensions to download (`.md`, `.mdx`, etc.)
