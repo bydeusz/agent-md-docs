@@ -1,6 +1,6 @@
 {
   "name": "@bydeusz/agent-md-docs",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "description": "A CLI tool that downloads framework documentation and generates a minified docs index for AGENTS.md or CLAUDE.md",
   "type": "module",
   "main": "dist/index.js",
