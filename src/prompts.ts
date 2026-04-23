@@ -75,7 +75,14 @@ export async function promptUser(): Promise<UserChoices> {
     selected.push(...picked);
   }
 
-  // Step 7: Styling
+  // Step 7: TanStack
+  const tanstackFrameworks = getFrameworksByCategory("tanstack");
+  if (tanstackFrameworks.length > 0) {
+    const picked = await promptCategory("TanStack", tanstackFrameworks);
+    selected.push(...picked);
+  }
+
+  // Step 8: Styling
   const stylingFrameworks = getFrameworksByCategory("styling");
   if (stylingFrameworks.length > 0) {
     const picked = await promptCategory("Styling", stylingFrameworks);

@@ -37,6 +37,9 @@ This tool extends that approach beyond Next.js to **14 frameworks** across multi
 - **TypeORM** - Full documentation from [typeorm/typeorm](https://github.com/typeorm/typeorm/tree/master/docs/docs)
 - **Drizzle ORM** - Full documentation from [drizzle-team/drizzle-orm-docs](https://github.com/drizzle-team/drizzle-orm-docs/tree/main/src/content/docs)
 
+### TanStack
+- **TanStack Query** - Full documentation from [TanStack/query](https://github.com/TanStack/query/tree/main/docs)
+
 ### Styling
 - **Tailwind CSS** - Full documentation from [tailwindlabs/tailwindcss.com](https://github.com/tailwindlabs/tailwindcss.com/tree/main/src/docs)
 
@@ -44,7 +47,7 @@ This tool extends that approach beyond Next.js to **14 frameworks** across multi
 
 The CLI will:
 1. Ask which AI tool you use (GitHub Copilot, Cursor, or Claude Code)
-2. Ask which framework documentation to download (frontend / backend / runtime / bundler / ORM / styling)
+2. Ask which framework documentation to download (frontend / backend / runtime / bundler / ORM / TanStack / styling)
 3. Clear the `.docs/` folder and download fresh docs
 4. Generate a minified index and insert it into `AGENTS.md` or `CLAUDE.md`
 5. Save a manifest (`.docs/manifest.json`) to track installed docs
