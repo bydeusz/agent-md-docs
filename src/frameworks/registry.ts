@@ -1,4 +1,4 @@
-export type FrameworkCategory = "frontend" | "backend" | "runtime" | "bundler" | "orm" | "styling";
+export type FrameworkCategory = "frontend" | "backend" | "runtime" | "bundler" | "orm" | "tanstack" | "styling";
 
 export interface FrameworkConfig {
   /** Display name shown in prompts */
@@ -41,6 +41,7 @@ import { typeormConfig } from "./typeorm.js";
 import { drizzleConfig } from "./drizzle.js";
 import { bunConfig } from "./bun.js";
 import { nodejsConfig } from "./nodejs.js";
+import { tanstackQueryConfig } from "./tanstack-query.js";
 
 export const frameworkRegistry: FrameworkConfig[] = [
   reactConfig,
@@ -58,6 +59,7 @@ export const frameworkRegistry: FrameworkConfig[] = [
   prismaConfig,
   typeormConfig,
   drizzleConfig,
+  tanstackQueryConfig,
   tailwindConfig,
 ];
 
