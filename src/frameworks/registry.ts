@@ -35,6 +35,7 @@ import { expressConfig } from "./express.js";
 import { vueConfig } from "./vue.js";
 import { nuxtConfig } from "./nuxt.js";
 import { viteConfig } from "./vite.js";
+import { turborepoConfig } from "./turborepo.js";
 import { prismaConfig } from "./prisma.js";
 import { tailwindConfig } from "./tailwind.js";
 import { typeormConfig } from "./typeorm.js";
@@ -56,6 +57,7 @@ export const frameworkRegistry: FrameworkConfig[] = [
   bunConfig,
   nodejsConfig,
   viteConfig,
+  turborepoConfig,
   prismaConfig,
   typeormConfig,
   drizzleConfig,
