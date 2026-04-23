@@ -80,6 +80,31 @@ npm run build
 node dist/index.js
 ```
 
+### Publishing a new version
+
+```bash
+# 1. Make sure you're on main with everything merged
+git checkout main && git pull
+
+# 2. Bump the version (pick patch/minor/major)
+npm version patch   # 1.0.4 → 1.0.5
+# npm version minor  (1.0.4 → 1.1.0)
+# npm version major  (1.0.4 → 2.0.0)
+
+# 3. Build
+npm run build
+
+# 4. Publish to npm
+npm publish
+
+# 5. Push the commit + tag that `npm version` created
+git push && git push --tags
+```
+
+Checks before publishing:
+- `npm whoami` — logged in? If not: `npm login`
+- `npm pack --dry-run` — verify which files are included (should be `dist/`, `package.json`, and `README.md` only)
+
 ## What it does
 
 The tool downloads markdown documentation from a framework's GitHub repository and saves it locally in a `.docs/` folder. It then scans the downloaded docs and generates a compact, single-line index wrapped in HTML comment markers, like:
