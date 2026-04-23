@@ -8,7 +8,7 @@ This project was inspired by Vercel's research showing that a compressed docs in
 
 Read the full article: [AGENTS.md outperforms skills in our agent evals](https://vercel.com/blog/agents-md-outperforms-skills-in-our-agent-evals)
 
-This tool extends that approach beyond Next.js to **14 frameworks** across multiple categories, so any project can benefit from retrieval-led reasoning.
+This tool extends that approach beyond Next.js to **18 frameworks** across multiple categories, so any project can benefit from retrieval-led reasoning.
 
 ## Supported Frameworks
 
@@ -31,6 +31,7 @@ This tool extends that approach beyond Next.js to **14 frameworks** across multi
 
 ### Bundlers
 - **Vite** - Full documentation from [vitejs/vite](https://github.com/vitejs/vite/tree/main/docs)
+- **Turborepo** - Full documentation from [vercel/turborepo](https://github.com/vercel/turborepo/tree/main/apps/docs/content/docs)
 
 ### ORMs
 - **Prisma** - Full documentation from [prisma/docs](https://github.com/prisma/docs/tree/main/apps/docs/content)
